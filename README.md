@@ -1,10 +1,10 @@
 # wundergroundPWS_info
-Uses the apis to get historical and current wunderground data and presents the results in a user-friendly way
+Uses the wunderground apis to get historical and current wunderground data for your station and presents the results in a user-friendly way
 All you need to input in the python code is your station ID and your API.
 There are also some modules you will also need to make thie work.
 
 ### Set Up
-    weeks_past = n  # how many weeks in the past do you want to examine
+    weeks_past = n  # how many weeks in the past do you have data
     wu = WUndergroundAPI(
         api_key="",  # input your the api key here
         default_station_id="",  # your station id
@@ -13,9 +13,10 @@ There are also some modules you will also need to make thie work.
     
 ### Usage
 
-You simply run python3 weather.py and choose how many days or weeks of data you want to analyze (this example uses 5 weeks of past data). 
+You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 weeks of past data). 
 
-<img width="379" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211218104-4d003369-68a3-4025-93ac-f9733cdeac70.png">
+<img width="204" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211220200-84bf69f5-339d-41f2-a5de-e79ca691b8fa.png">
+
 
 ### Result
 
