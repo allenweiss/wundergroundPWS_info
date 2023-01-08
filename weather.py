@@ -8,6 +8,8 @@ import json
 import urllib3
 import colorama
 from colorama import Fore, Back, Style
+import csv, os, sys, time
+import os.path
 
 colorama.init(autoreset=True)
 http = urllib3.PoolManager()
@@ -98,6 +100,7 @@ elem = lastnElements(n)
 
 tot = 0
 note = 0
+flag=0
 
 ct = len(rng)
 
@@ -138,27 +141,25 @@ for index, i in enumerate(rng):
 
     if dow[i] == dow[dayNumber] and index == len(rng) - 1:
         wkday = "Today"
+        flag=1
     else:
         wkday = str(dow[i]) + " - " + td_i
     h = elem[index]
-    tot = tot + ccurrent["imperial"]["precipTotal"]
-    if ccurrent["imperial"]["precipTotal"] > 0:
-        print(
-            Fore.CYAN
-            + str(ccurrent["imperial"]["precipTotal"])
-            + Style.RESET_ALL
-            + " - "
-            + wkday
-        )
+    if flag==0:
+        tot = tot + ccurrent["imperial"]["precipTotal"]
+        if ccurrent["imperial"]["precipTotal"] > 0:
+            print(
+                Fore.CYAN
+                + str(ccurrent["imperial"]["precipTotal"])
+                + Style.RESET_ALL
+                + " - "
+                + wkday
+                )
 
-    else:
-        print(str(ccurrent["imperial"]["precipTotal"]) + " - " + wkday)
+        else:
+            print(str(ccurrent["imperial"]["precipTotal"]) + " - " + wkday)
 
-print()
 
-print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
-
-print()
 
 url2 = (
     "https://api.weather.com/v2/pws/observations/current?stationId="
@@ -167,21 +168,46 @@ url2 = (
     + wu.api_key
     + ""
 )
-resp = http.request("GET", url2)
-data = resp.data
-ccurrent_tp = json.loads(data)
-ccurrent = ccurrent_tp["observations"][0]
+resp2 = http.request("GET", url2)
+data2 = resp2.data
+ccurrent_tp2 = json.loads(data2)
+ccurrent2 = ccurrent_tp2["observations"][0]
+
+tot = tot + ccurrent2["imperial"]["precipTotal"]
+
+if ccurrent2["imperial"]["precipTotal"] > 0:
+    print(
+        Fore.CYAN
+        + str(ccurrent2["imperial"]["precipTotal"])
+        + Style.RESET_ALL
+        + " - "
+        + wkday
+        )
+
+else:
+    print(str(ccurrent2["imperial"]["precipTotal"]) + " - " + wkday)
+
+
+
+print()
+
+print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
+
+print()
+
+
+
 print(Fore.CYAN + "CURRENT CONDITIONS")
-print(str("Today's rain total = " + str(ccurrent["imperial"]["precipTotal"])))
+print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
 print(
     "Precipitation rate = "
-    + str(ccurrent["imperial"]["precipRate"])
+    + str(ccurrent2["imperial"]["precipRate"])
     + " inches per hour"
 )
-temp = str(ccurrent["imperial"]["temp"])
+temp = str(ccurrent2["imperial"]["temp"])
 print(f"Temperature = {temp}\N{DEGREE SIGN}")
-windgust = str(ccurrent["imperial"]["windGust"])
-windspeed = str(ccurrent["imperial"]["windSpeed"])
+windgust = str(ccurrent2["imperial"]["windGust"])
+windspeed = str(ccurrent2["imperial"]["windSpeed"])
 print(f"Wind speed = {windspeed} mph and wind gust = {windgust} mph")
 print()
 
