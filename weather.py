@@ -8,9 +8,6 @@ import json
 import urllib3
 import colorama
 from colorama import Fore, Back, Style
-import csv, os, sys, time
-import os.path
-
 colorama.init(autoreset=True)
 http = urllib3.PoolManager()
 
