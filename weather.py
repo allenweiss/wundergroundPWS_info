@@ -55,7 +55,6 @@ def getDropDown():
         else:
             wrds = str(i) + " Days Ago to Now"
         idx = "[" + str(i) + "] " + wrds
-        #idx =  wrds
         a.append(idx)
     return a
 
