@@ -13,7 +13,7 @@ There are also some modules you will also need to make thie work.
     
 ### Usage
 
-Then you simply run python3 weather.py  
+You simply run python3 weather.py and choose how many days or weeks of data you want to analyze. 
 
 <img width="379" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211218104-4d003369-68a3-4025-93ac-f9733cdeac70.png">
 
