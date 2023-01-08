@@ -9,4 +9,11 @@ There are some modules you will also need to make thie work
         units=units.ENGLISH_UNITS,
     )
     
-    ![screenshot_basic](https://raw.githubusercontent.com/allenweiss/wundergroundPWS_info/images/basic_screen.png)
+  
+<img width="379" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211218104-4d003369-68a3-4025-93ac-f9733cdeac70.png">
+
+Then you simply run python3 weather.py
+
+You will a result something like this:
+
+<img width="683" alt="results_screen" src="https://user-images.githubusercontent.com/1487109/211218144-5b61b728-6748-4e8f-9396-1f53fd3089ec.png">
