@@ -8,3 +8,5 @@ There are some modules you will also need to make thie work
         default_station_id="",  # your station id
         units=units.ENGLISH_UNITS,
     )
+    
+    ![screenshot_basic](https://raw.githubusercontent.com/allenweiss/wundergroundPWS_info/images/basic_screen.png)
