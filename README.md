@@ -9,10 +9,13 @@ There are some modules you will also need to make thie work
         units=units.ENGLISH_UNITS,
     )
     
-  
+### Usage
+
+Then you simply run python3 weather.py  
+
 <img width="379" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211218104-4d003369-68a3-4025-93ac-f9733cdeac70.png">
 
-Then you simply run python3 weather.py
+### Result
 
 You will get a result something like this:
 
