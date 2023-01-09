@@ -29,6 +29,8 @@ dt = datetime.now()
 
 dayNumber = dt.weekday()
 
+
+
 today = datetime.today()
 
 tmp = datetime.now() - timedelta(days=weeks_past * 7)
@@ -95,6 +97,8 @@ def chooseHist():
     elem = lastnElements(n)
     main(rng,elem)
 
+
+
 def minmax():
     url=(
     "https://api.weather.com/v2/pws/observations/all/1day?stationId="
@@ -112,11 +116,28 @@ def minmax():
     for i in range(0,rs):
         arr.append(ct[i]['imperial']['precipRate'])
     return max( arr )
+    
+    
+def PrecipIndicator(n):
+    if n>.25:
+        out=Fore.CYAN + str(n) + Style.RESET_ALL
+    else:
+        out=n
+    rs="Precipitation rate = "+str(out)+" inches per hour"
+    return rs
+    
 
-
+def nonzero(n):
+    if n>0:
+        out=Fore.CYAN +str(n) +Style.RESET_ALL
+    else:
+        out=n
+    rs=str(out) 
+    return rs
+    
 def main(rng,elem):
     dt2=datetime.now()
-    dayTime = dt2.strftime("%-H:%-M")
+    dayTime = dt2.strftime("%-I:%M %p")
     tot = 0
     note = 0
     flag=0
@@ -162,20 +183,8 @@ def main(rng,elem):
         h = elem[index]
         if flag==0:
             tot = tot + ccurrent["imperial"]["precipTotal"]
-            if ccurrent["imperial"]["precipTotal"] > 0:
-                print(
-                    Fore.CYAN
-                    + str(ccurrent["imperial"]["precipTotal"])
-                    + Style.RESET_ALL
-                    + " - "
-                    + wkday
-                    )
-
-            else:
-                print(str(ccurrent["imperial"]["precipTotal"]) + " - " + wkday)
-
-
-
+            print(nonzero(ccurrent["imperial"]["precipTotal"])+ " - " + wkday)
+            
     url2 = (
         "https://api.weather.com/v2/pws/observations/current?stationId="
         + wu.default_station_id
@@ -189,40 +198,14 @@ def main(rng,elem):
     ccurrent2 = ccurrent_tp2["observations"][0]
 
     tot = tot + ccurrent2["imperial"]["precipTotal"]
-
-    if ccurrent2["imperial"]["precipTotal"] > 0:
-        print(
-            Fore.CYAN
-            + str(ccurrent2["imperial"]["precipTotal"])
-            + Style.RESET_ALL
-            + " - "
-            + wkday
-            )
-
-    else:
-        print(str(ccurrent2["imperial"]["precipTotal"]) + " - " + wkday)
-
-
-
+    print(nonzero(ccurrent2["imperial"]["precipTotal"])+ " - " + wkday)
     print()
-
     print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
-
     print()
-
-
-
-    print(Fore.CYAN + "CURRENT CONDITIONS - "+dayTime)
+    print(Fore.CYAN + "CURRENT CONDITIONS @ "+dayTime)
     print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
     prate=ccurrent2["imperial"]["precipRate"]
-    if float(prate)>.25:
-        prate=Fore.CYAN+str(prate)+ Style.RESET_ALL
-
-    print(
-        "Precipitation rate = "
-        + str(prate)
-        + " inches per hour"
-    )
+    print(PrecipIndicator(prate))
     print('Highest precip rate today = '+str(minmax()))
     temp = str(ccurrent2["imperial"]["temp"])
     print(f"Temperature = {temp}\N{DEGREE SIGN}")
