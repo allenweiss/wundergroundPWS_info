@@ -115,6 +115,8 @@ def minmax():
 
 
 def main(rng,elem):
+    dt2=datetime.now()
+    dayTime = dt2.strftime("%-H:%-M")
     tot = 0
     note = 0
     flag=0
@@ -210,7 +212,7 @@ def main(rng,elem):
 
 
 
-    print(Fore.CYAN + "CURRENT CONDITIONS")
+    print(Fore.CYAN + "CURRENT CONDITIONS - "+dayTime)
     print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
     prate=ccurrent2["imperial"]["precipRate"]
     if float(prate)>.25:
