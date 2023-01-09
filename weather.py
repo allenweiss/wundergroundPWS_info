@@ -200,7 +200,7 @@ print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
 
 prate=ccurrent2["imperial"]["precipRate"]
 if float(prate)>.25:
-    prate=Fore.CYAN+str(prate)
+    prate=Fore.CYAN+str(prate)+ Style.RESET_ALL
 
 print(
     "Precipitation rate = "
