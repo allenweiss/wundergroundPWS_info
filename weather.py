@@ -89,134 +89,139 @@ def lastnElements(n):
     return res
 
 
-n = int(dayDropDown())
+def chooseHist():
+    n = int(dayDropDown())
+    rng = last_n_days(dayNumber, n)
+    elem = lastnElements(n)
+    main(rng,elem)
 
-rng = last_n_days(dayNumber, n)
 
-elem = lastnElements(n)
 
-tot = 0
-note = 0
-flag=0
 
-ct = len(rng)
+def main(rng,elem):
+    tot = 0
+    note = 0
+    flag=0
+    arr_date = []
+    ct = len(rng)
+    print()
+    for index, i in enumerate(rng):
 
-arr_date = []
+        tdx = datetime.now() - timedelta(days=ct - index - 1)  # days ago
+        td = tdx.strftime("%Y%m%d")
+        td_i = tdx.strftime("%b-%-d")
+        url = (
+            "https://api.weather.com/v2/pws/history/daily?stationId="
+            + wu.default_station_id
+            + "&format=json&units=e&date="
+            + td
+            + "&apiKey="
+            + wu.api_key
+            + ""
+        )
 
-print()
+        resp = http.request("GET", url)
 
-for index, i in enumerate(rng):
+        data = resp.data
 
-    tdx = datetime.now() - timedelta(days=ct - index - 1)  # days ago
-    td = tdx.strftime("%Y%m%d")
-    td_i = tdx.strftime("%b-%-d")
-    url = (
-        "https://api.weather.com/v2/pws/history/daily?stationId="
+        ccurrent_tp = json.loads(data)
+
+        if len(ccurrent_tp["observations"]) == 0:  # check to see if the return is empty
+            note = 1
+            continue
+
+        arr_date.append(
+            td_i
+        )  # used to get active data points - used to identify first data point
+
+        ccurrent = ccurrent_tp["observations"][0]
+
+        if dow[i] == dow[dayNumber] and index == len(rng) - 1:
+            wkday = "Today"
+            flag=1
+        else:
+            wkday = str(dow[i]) + " - " + td_i
+        h = elem[index]
+        if flag==0:
+            tot = tot + ccurrent["imperial"]["precipTotal"]
+            if ccurrent["imperial"]["precipTotal"] > 0:
+                print(
+                    Fore.CYAN
+                    + str(ccurrent["imperial"]["precipTotal"])
+                    + Style.RESET_ALL
+                    + " - "
+                    + wkday
+                    )
+
+            else:
+                print(str(ccurrent["imperial"]["precipTotal"]) + " - " + wkday)
+
+
+
+    url2 = (
+        "https://api.weather.com/v2/pws/observations/current?stationId="
         + wu.default_station_id
-        + "&format=json&units=e&date="
-        + td
-        + "&apiKey="
+        + "&format=json&units=e&apiKey="
         + wu.api_key
         + ""
     )
+    resp2 = http.request("GET", url2)
+    data2 = resp2.data
+    ccurrent_tp2 = json.loads(data2)
+    ccurrent2 = ccurrent_tp2["observations"][0]
 
-    resp = http.request("GET", url)
+    tot = tot + ccurrent2["imperial"]["precipTotal"]
 
-    data = resp.data
+    if ccurrent2["imperial"]["precipTotal"] > 0:
+        print(
+            Fore.CYAN
+            + str(ccurrent2["imperial"]["precipTotal"])
+            + Style.RESET_ALL
+            + " - "
+            + wkday
+            )
 
-    ccurrent_tp = json.loads(data)
-
-    if len(ccurrent_tp["observations"]) == 0:  # check to see if the return is empty
-        note = 1
-        continue
-
-    arr_date.append(
-        td_i
-    )  # used to get active data points - used to identify first data point
-
-    ccurrent = ccurrent_tp["observations"][0]
-
-    if dow[i] == dow[dayNumber] and index == len(rng) - 1:
-        wkday = "Today"
-        flag=1
     else:
-        wkday = str(dow[i]) + " - " + td_i
-    h = elem[index]
-    if flag==0:
-        tot = tot + ccurrent["imperial"]["precipTotal"]
-        if ccurrent["imperial"]["precipTotal"] > 0:
-            print(
-                Fore.CYAN
-                + str(ccurrent["imperial"]["precipTotal"])
-                + Style.RESET_ALL
-                + " - "
-                + wkday
-                )
-
-        else:
-            print(str(ccurrent["imperial"]["precipTotal"]) + " - " + wkday)
+        print(str(ccurrent2["imperial"]["precipTotal"]) + " - " + wkday)
 
 
 
-url2 = (
-    "https://api.weather.com/v2/pws/observations/current?stationId="
-    + wu.default_station_id
-    + "&format=json&units=e&apiKey="
-    + wu.api_key
-    + ""
-)
-resp2 = http.request("GET", url2)
-data2 = resp2.data
-ccurrent_tp2 = json.loads(data2)
-ccurrent2 = ccurrent_tp2["observations"][0]
+    print()
 
-tot = tot + ccurrent2["imperial"]["precipTotal"]
+    print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
 
-if ccurrent2["imperial"]["precipTotal"] > 0:
+    print()
+
+
+
+    print(Fore.CYAN + "CURRENT CONDITIONS")
+    print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
+    prate=ccurrent2["imperial"]["precipRate"]
+    if float(prate)>.25:
+        prate=Fore.CYAN+str(prate)+ Style.RESET_ALL
+
     print(
-        Fore.CYAN
-        + str(ccurrent2["imperial"]["precipTotal"])
-        + Style.RESET_ALL
-        + " - "
-        + wkday
-        )
-
-else:
-    print(str(ccurrent2["imperial"]["precipTotal"]) + " - " + wkday)
-
-
-
-print()
-
-print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
-
-print()
-
-
-
-print(Fore.CYAN + "CURRENT CONDITIONS")
-print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
-
-
-prate=ccurrent2["imperial"]["precipRate"]
-if float(prate)>.25:
-    prate=Fore.CYAN+str(prate)+ Style.RESET_ALL
-
-print(
-    "Precipitation rate = "
-    + str(prate)
-    + " inches per hour"
-)
-temp = str(ccurrent2["imperial"]["temp"])
-print(f"Temperature = {temp}\N{DEGREE SIGN}")
-windgust = str(ccurrent2["imperial"]["windGust"])
-windspeed = str(ccurrent2["imperial"]["windSpeed"])
-print(f"Wind speed = {windspeed} mph and wind gust = {windgust} mph")
-print()
-
-earliest_date = arr_date[0]
-if note == 1:
-    print(
-        Fore.RED
-        + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
+        "Precipitation rate = "
+        + str(prate)
+        + " inches per hour"
     )
+    temp = str(ccurrent2["imperial"]["temp"])
+    print(f"Temperature = {temp}\N{DEGREE SIGN}")
+    windgust = str(ccurrent2["imperial"]["windGust"])
+    windspeed = str(ccurrent2["imperial"]["windSpeed"])
+    print(f"Wind speed = {windspeed} mph and wind gust = {windgust} mph")
+    print()
+
+    earliest_date = arr_date[0]
+    if note == 1:
+        print(
+            Fore.RED
+            + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
+        )
+    fc=str(input('See today again (x): ') or exit(0))
+    if fc=='x':
+        main([0],elem)
+  
+
+if __name__ == "__main__":
+    chooseHist()
