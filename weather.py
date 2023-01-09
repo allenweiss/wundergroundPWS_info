@@ -3,7 +3,7 @@ from pprint import pprint
 from simple_term_menu import TerminalMenu
 from wunderground_pws import WUndergroundAPI, units
 from datetime import datetime, timedelta
-from itertools import cycle
+#from itertools import cycle
 import json
 import urllib3
 import colorama

@@ -6,13 +6,18 @@ This script uses the wunderground apis to get historical and current wundergroun
 All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up.  There are also a few modules you will also need to make this work.
 
 ### Set Up
+
+See below for the data you need:
+
     weeks_past = n  # how many weeks in the past do you have data
     wu = WUndergroundAPI(
         api_key="",  # input your the api key here
         default_station_id="",  # your station id
         units=units.ENGLISH_UNITS,
     )
-    
+
+Import the following modules: datetime, simple_term_menu, colorama, urllib3, json
+
 ### Usage
 
 You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 weeks of past data). 
