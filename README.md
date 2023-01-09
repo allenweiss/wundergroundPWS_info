@@ -1,7 +1,9 @@
 # wundergroundPWS_info
-Uses the wunderground apis to get historical and current wunderground data for your station and presents the results in a user-friendly way
-All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground.
-There are also some modules you will also need to make this work.
+
+If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way.
+
+This script uses the wunderground apis to get historical and current wunderground data for your station and presents the results.
+All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up.  There are also some modules you will also need to make this work.
 
 ### Set Up
     weeks_past = n  # how many weeks in the past do you have data
