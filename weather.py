@@ -196,9 +196,15 @@ print()
 
 print(Fore.CYAN + "CURRENT CONDITIONS")
 print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
+
+
+prate=ccurrent2["imperial"]["precipRate"]
+if float(prate)>.25:
+    prate=Fore.CYAN+str(prate)
+
 print(
     "Precipitation rate = "
-    + str(ccurrent2["imperial"]["precipRate"])
+    + str(prate)
     + " inches per hour"
 )
 temp = str(ccurrent2["imperial"]["temp"])
