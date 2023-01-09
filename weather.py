@@ -95,7 +95,23 @@ def chooseHist():
     elem = lastnElements(n)
     main(rng,elem)
 
-
+def minmax():
+    url=(
+    "https://api.weather.com/v2/pws/observations/all/1day?stationId="
+    + wu.default_station_id
+    + "&format=json&units=e&apiKey="
+    + wu.api_key
+    + ""
+    )
+    resp = http.request("GET", url)
+    data = resp.data
+    ccurrent_ov = json.loads(data)
+    ct=ccurrent_ov['observations']
+    rs=len(ct)
+    arr=[]
+    for i in range(0,rs):
+        arr.append(ct[i]['imperial']['precipRate'])
+    return max( arr )
 
 
 def main(rng,elem):
@@ -205,6 +221,7 @@ def main(rng,elem):
         + str(prate)
         + " inches per hour"
     )
+    print('Highest precip rate today = '+str(minmax()))
     temp = str(ccurrent2["imperial"]["temp"])
     print(f"Temperature = {temp}\N{DEGREE SIGN}")
     windgust = str(ccurrent2["imperial"]["windGust"])
