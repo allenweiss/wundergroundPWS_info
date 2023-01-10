@@ -222,7 +222,7 @@ def main(rng,elem):
         )
     fc=str(input('See today again (x): ') or exit(0))
     if fc=='x':
-        main(rng,elem)
+        main([dayNumber],elem)
   
 
 if __name__ == "__main__":
