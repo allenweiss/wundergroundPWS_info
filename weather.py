@@ -20,6 +20,11 @@ wu = WUndergroundAPI(
     default_station_id="",  # your station id
     units=units.ENGLISH_UNITS,
 )
+
+const={
+ 'coord':'',    # you longitude and latitude for the forecast
+}
+
 # *********END SET UP *******************
 
 
@@ -28,7 +33,6 @@ dow = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sund
 dt = datetime.now()
 
 dayNumber = dt.weekday()
-
 
 
 today = datetime.today()
@@ -92,6 +96,8 @@ def lastnElements(n):
 
 
 def chooseHist():
+    if "-s" in sys.argv:   
+        main([dayNumber],lastnElements(1))
     n = int(dayDropDown())
     rng = last_n_days(dayNumber, n)
     elem = lastnElements(n)
@@ -119,7 +125,8 @@ def minmax():
     
     
 def PrecipIndicator(n):
-    if n>.25:
+    n=float(n)
+    if n>.2:
         out=Fore.CYAN + str(n) + Style.RESET_ALL
     else:
         out=n
@@ -128,6 +135,7 @@ def PrecipIndicator(n):
     
 
 def nonzero(n):
+    n=float(n)
     if n>0:
         out=Fore.CYAN +str(n) +Style.RESET_ALL
     else:
@@ -143,6 +151,8 @@ def main(rng,elem):
     flag=0
     arr_date = []
     ct = len(rng)
+    print()
+    print('********************')
     print()
     for index, i in enumerate(rng):
 
@@ -200,30 +210,67 @@ def main(rng,elem):
     tot = tot + ccurrent2["imperial"]["precipTotal"]
     print(nonzero(ccurrent2["imperial"]["precipTotal"])+ " - " + wkday)
     print()
-    print("Accumulated Rain Total = " + str("%.2f" % tot) + " inches since " +str(arr_date[0]))
-    print()
+    if rng!=[0]:
+        print("Accumulated Rain Total = " + nonzero(str("%.2f" % tot)) + " inches since " +str(arr_date[0]))
+        print()
     print(Fore.CYAN + "CURRENT CONDITIONS @ "+dayTime)
     print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
     prate=ccurrent2["imperial"]["precipRate"]
     print(PrecipIndicator(prate))
-    print('Highest precip rate today = '+str(minmax()))
+    print('Highest precipitation rate today = '+str(minmax())+ " inches per hour")
     temp = str(ccurrent2["imperial"]["temp"])
     print(f"Temperature = {temp}\N{DEGREE SIGN}")
     windgust = str(ccurrent2["imperial"]["windGust"])
     windspeed = str(ccurrent2["imperial"]["windSpeed"])
     print(f"Wind speed = {windspeed} mph and wind gust = {windgust} mph")
     print()
-
     earliest_date = arr_date[0]
     if note == 1:
         print(
             Fore.RED
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
-    fc=str(input('See today again (x): ') or exit(0))
-    if fc=='x':
+    fc=str(input('Would you like to see a forecast? (f) or hit return to refresh: ') or 'a')
+    elif fc=='f':
+        forecast(6)
+        exit(0)
+    elif fc=='a':
         main([dayNumber],elem)
-  
+    elif fc=='x':
+        exit(0)
+ 
+ 
+def forecast(n):
+     url='https://api.weather.com/v3/wx/forecast/daily/5day?geocode='+const['coord']+'&format=json&units=e&language=en-US&apiKey='+wu.api_key
+     resp = http.request("GET", url)
+     data = resp.data
+     forecast = json.loads(data)
+     print()
+     print("***************FORECAST********************")
+     print()
+     for i in range(1,n):
+         if str(forecast['daypart'][0]['dayOrNight'][i])=='N':
+             print('NIGHT')
+         else:
+             print('******************')
+             print("DAY")
+    
+         print(forecast['daypart'][0]['daypartName'][i])
+         print(str(forecast['daypart'][0]['precipChance'][i])+'%')
+         print(forecast['daypart'][0]['precipType'][i])
+         print()
+     if n==6:
+         lf=input("Longer forecast (y) or b: " or exit(0))
+         if lf=='y' :
+             forecast(11)
+         elif lf=='b':
+             main([dayNumber],lastnElements(1))
+             exit(0)
+     else:
+         main()
+ 
+ 
+      
 
 if __name__ == "__main__":
     chooseHist()
