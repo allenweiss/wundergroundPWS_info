@@ -232,7 +232,7 @@ def main(rng,elem):
         )
     fc=str(input('Would you like to see a forecast (w) or hit return to refresh? : ') or 'a')
     if fc=='w':
-        forecast(6)
+        weatherForecast(6)
         exit(0)
     elif fc=='a':
         main([dayNumber],elem)
@@ -240,7 +240,7 @@ def main(rng,elem):
         exit(0)
  
  
-def forecast(n):
+def weatherForecast(n):
      url='https://api.weather.com/v3/wx/forecast/daily/5day?geocode='+const['coord']+'&format=json&units=e&language=en-US&apiKey='+wu.api_key
      resp = http.request("GET", url)
      data = resp.data
@@ -262,7 +262,7 @@ def forecast(n):
      if n==6:
          lf=input("Longer forecast (y) or b: " or exit(0))
          if lf=='y' :
-             forecast(11)
+             weatherForecast(11)
          elif lf=='b':
              main([dayNumber],lastnElements(1))
              exit(0)
