@@ -231,7 +231,7 @@ def main(rng,elem):
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
     fc=str(input('Would you like to see a forecast (w) or hit return to refresh? : ') or 'a')
-    if fc=='f':
+    if fc=='w':
         forecast(6)
         exit(0)
     elif fc=='a':
