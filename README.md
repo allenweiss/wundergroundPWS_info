@@ -3,7 +3,10 @@
 If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way, plus get a forecast.
 
 This script uses the wunderground apis to get historical and current wunderground data for your station and presents the results.  It also gives you forecasts for your specific area.
-All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up.  You also need to provide longitude and latitude information.  This can be found on a google map.  Simply find your location on the map, right click and you'll see the longitude and latitude.  Simple insert that as below (comma separated). There are also a few modules you will also need to make this work.
+
+All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up).
+
+You also need to provide longitude and latitude information.  This can be found on a google map or your personal wunderground page.  Simply find your location on the map, right click and you'll see the longitude and latitude.  Simple insert that as below (comma separated). There are also a few modules you will also need to make this work.
 
 ### Set Up
 
@@ -12,12 +15,12 @@ See below for the data you need:
     weeks_past = n  # how many weeks in the past do you have data
     wu = WUndergroundAPI(
         api_key="",  # input your the api key here
-        default_station_id="",  # your station id
+        default_station_id="XXX",  # your station id
         units=units.ENGLISH_UNITS,
     )
 	
 	const={
-	 'coord':'',    # you longitude and latitude for the forecast
+	 'coord':'xxx,yyy',    # you longitude and latitude for the forecast
 	}
 	
 
