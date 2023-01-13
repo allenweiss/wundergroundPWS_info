@@ -248,14 +248,22 @@ def weatherForecast(n):
      print()
      print("***************FORECAST********************")
      print()
+     print('******************')
+     print('TODAY')
+     print('******************')
      for i in range(1,n):
+         
          if str(forecast['daypart'][0]['dayOrNight'][i])=='N':
              print('NIGHT')
-         else:
+         elif str(forecast['daypart'][0]['dayOrNight'][i])=='D':
+             print('******************')
+             print(forecast['daypart'][0]['daypartName'][i].upper())
              print('******************')
              print("DAY")
+         else:
+             print('**********TODAY**********')
     
-         print(forecast['daypart'][0]['daypartName'][i])
+         #print(forecast['daypart'][0]['daypartName'][i])
          print(str(forecast['daypart'][0]['precipChance'][i])+'%')
          print(forecast['daypart'][0]['precipType'][i])
          print()
@@ -267,7 +275,9 @@ def weatherForecast(n):
              main([dayNumber],lastnElements(1))
              exit(0)
      else:
-         main()
+         main([dayNumber],lastnElements(1))
+ 
+     
  
  
       
