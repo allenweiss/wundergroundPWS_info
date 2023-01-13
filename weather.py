@@ -13,7 +13,7 @@ http = urllib3.PoolManager()
 
 # *********SET UP *******************
 
-weeks_past = 5  # how many weeks in the past do you want to examine
+weeks_past =   # how many weeks in the past do you want to examine
 
 wu = WUndergroundAPI(
     api_key="",  # the api key
@@ -22,7 +22,7 @@ wu = WUndergroundAPI(
 )
 
 const={
- 'coord':'',    # you longitude and latitude for the forecast
+ 'coord':'',    # your longitude and latitude for the forecast
 }
 
 # *********END SET UP *******************
