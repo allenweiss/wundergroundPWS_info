@@ -239,8 +239,8 @@ def main(rng,elem):
             Fore.RED
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
-    fc=str(input('See a forecast (w), search a date (s) or hit return to refresh? ') or 'a')
-    if fc=='w':
+    fc=str(input('See a forecast (f), search a date (s) or hit return to refresh? ') or 'a')
+    if fc=='f':
         weatherForecast(6)
         exit(0)
     elif fc=='a':
@@ -293,6 +293,13 @@ def searchHist():
      yr=input("Year (YYYY):")
      mo=input("Month (MM):")
      dy=input("Day (DD): ")
+     
+     if len(str(yr))!=4 or len(str(mo))!=2 or len(str(dy))!=2:
+         print('You need to put in the correct format for the numbers.  Try again')
+         yr=input("Year (YYYY):")
+         mo=input("Month (MM):")
+         dy=input("Day (DD): ")
+     
      td=str(yr)+str(mo)+str(dy)
      
      url = (
@@ -307,13 +314,19 @@ def searchHist():
 
      resp = http.request("GET", url)
 
+
      data = resp.data
 
      ccurrent = json.loads(data)
-     obs=ccurrent["observations"][0]
-     print()
-     print('Total precipitation: '+str(obs['imperial']['precipTotal']))
-     print('Max precipitation rate: '+str(obs['imperial']['precipRate']))
+     if len(ccurrent["observations"]) == 0:  # check to see if the return is empty
+         print("You do not have data for this date")
+         
+     else:
+         obs=ccurrent["observations"][0]
+         print()
+         print('Total precipitation: '+str(obs['imperial']['precipTotal']))
+         print('Max precipitation rate: '+str(obs['imperial']['precipRate']))
+         print()
      fc=str(input('Back to today (b) or search another date (s) ') or 'a')
      if fc=='b':
          main([dayNumber],lastnElements(1))
@@ -321,7 +334,7 @@ def searchHist():
          searchHist()
      elif fc=='x':
          exit(0)
- 
+   
       
 
 if __name__ == "__main__":
