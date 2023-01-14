@@ -118,10 +118,18 @@ def minmax():
     ccurrent_ov = json.loads(data)
     ct=ccurrent_ov['observations']
     rs=len(ct)
+    #ct[i]['obsTimeLocal']
     arr=[]
+    ind=[]
     for i in range(0,rs):
         arr.append(ct[i]['imperial']['precipRate'])
-    return max( arr )
+        ind.append(ct[i]['obsTimeLocal'])
+    maxr=max(arr)
+    index = arr.index(maxr) 
+    indTime=ind[index]
+    indTime=datetime.fromisoformat(indTime)
+    time=indTime.strftime('%-I:%M %p')
+    return maxr, time
     
     
 def PrecipIndicator(n):
@@ -217,7 +225,8 @@ def main(rng,elem):
     print(str("Today's rain total = " + str(ccurrent2["imperial"]["precipTotal"])))
     prate=ccurrent2["imperial"]["precipRate"]
     print(PrecipIndicator(prate))
-    print('Highest precipitation rate today = '+str(minmax())+ " inches per hour")
+    maxr,time=minmax()
+    print(f"Highest precipitation rate today = {maxr} inches per hour at {time}")
     temp = str(ccurrent2["imperial"]["temp"])
     print(f"Temperature = {temp}\N{DEGREE SIGN}")
     windgust = str(ccurrent2["imperial"]["windGust"])
