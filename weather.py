@@ -134,7 +134,7 @@ def minmax():
     
 def PrecipIndicator(n):
     n=float(n)
-    if n>.2:
+    if n>0:
         out=Fore.CYAN + str(n) + Style.RESET_ALL
     else:
         out=n
@@ -239,12 +239,14 @@ def main(rng,elem):
             Fore.RED
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
-    fc=str(input('Would you like to see a forecast (w) or hit return to refresh? : ') or 'a')
+    fc=str(input('See a forecast (w), search a date (s) or hit return to refresh? ') or 'a')
     if fc=='w':
         weatherForecast(6)
         exit(0)
     elif fc=='a':
         main([dayNumber],elem)
+    elif fc=='s':
+        searchHist()
     elif fc=='x':
         exit(0)
  
@@ -286,8 +288,32 @@ def weatherForecast(n):
      else:
          main([dayNumber],lastnElements(1))
  
+def searchHist():
+     yr=input("Year (YYYY):")
+     mo=input("Month (MM):")
+     dy=input("Day (DD): ")
+     td=str(yr)+str(mo)+str(dy)
      
- 
+     url = (
+         "https://api.weather.com/v2/pws/history/daily?stationId="
+         + wu.default_station_id
+         + "&format=json&units=e&date="
+         + td
+         + "&apiKey="
+         + wu.api_key
+         + ""
+     )
+
+     resp = http.request("GET", url)
+
+     data = resp.data
+
+     ccurrent = json.loads(data)
+     obs=ccurrent["observations"][0]
+     print('Total precipitation: '+str(obs['imperial']['precipTotal']))
+     print('Max precipitation rate: '+str(obs['imperial']['precipRate']))
+     
+     
  
       
 
