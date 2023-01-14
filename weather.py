@@ -289,6 +289,7 @@ def weatherForecast(n):
          main([dayNumber],lastnElements(1))
  
 def searchHist():
+     print()
      yr=input("Year (YYYY):")
      mo=input("Month (MM):")
      dy=input("Day (DD): ")
@@ -310,10 +311,16 @@ def searchHist():
 
      ccurrent = json.loads(data)
      obs=ccurrent["observations"][0]
+     print()
      print('Total precipitation: '+str(obs['imperial']['precipTotal']))
      print('Max precipitation rate: '+str(obs['imperial']['precipRate']))
-     
-     
+     fc=str(input('Back to today (b) or search another date (s) ') or 'a')
+     if fc=='b':
+         main([dayNumber],lastnElements(1))
+     elif fc=='s':
+         searchHist()
+     elif fc=='x':
+         exit(0)
  
       
 
