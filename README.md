@@ -1,6 +1,6 @@
 # wundergroundPWS_info
 
-If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way, plus get a forecast.
+If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way, search a date plus get a forecast.
 
 This script uses the wunderground apis to get historical and current wunderground data for your station and presents the results.  It also gives you forecasts for your specific area.
 
