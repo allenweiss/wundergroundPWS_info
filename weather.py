@@ -239,14 +239,16 @@ def main(rng,elem):
             Fore.RED
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
-    fc=str(input('See a forecast (f), search a date (s) or hit return to refresh? ') or 'a')
+    fc=str(input('See a forecast (f), search a date (d), start again (s) or hit return to refresh? ') or 'a')
     if fc=='f':
         weatherForecast(6)
         exit(0)
     elif fc=='a':
         main([dayNumber],elem)
-    elif fc=='s':
+    elif fc=='d':
         searchHist()
+    elif fc=='s':
+        chooseHist()
     elif fc=='x':
         exit(0)
  
