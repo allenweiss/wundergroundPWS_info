@@ -1,4 +1,4 @@
-# wundergroundPWS_info
+# Wunderground PWS Info
 
 If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way, search a date plus get a forecast.
 
