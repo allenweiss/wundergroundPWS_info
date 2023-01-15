@@ -261,10 +261,7 @@ def weatherForecast(n):
      print()
      print("***************FORECAST********************")
      print()
-     print('******************')
-     print('TODAY')
-     print('******************')
-     for i in range(1,n):
+     for i in range(0,n):
          
          if str(forecast['daypart'][0]['dayOrNight'][i])=='N':
              print('NIGHT')
