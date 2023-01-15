@@ -28,10 +28,9 @@ Import the following modules: datetime, simple_term_menu, colorama, urllib3, jso
 
 ### Usage
 
-You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 weeks of past data). 
+You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 days of past data). 
 
-<img width="204" alt="choice_screen" src="https://user-images.githubusercontent.com/1487109/211220200-84bf69f5-339d-41f2-a5de-e79ca691b8fa.png">
-
+<img width="665" alt="2023-01-14_16-27-32" src="https://user-images.githubusercontent.com/1487109/212503057-a510ba60-c9e4-4cd0-8c4d-e5e731c3b3ea.png">
 
 ### Result
 
