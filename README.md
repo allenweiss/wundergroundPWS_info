@@ -6,7 +6,7 @@ This script uses the wunderground apis to get historical and current wundergroun
 
 All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up).
 
-You also need to provide longitude and latitude information.  This can be found on a google map or your personal wunderground page.  Simply find your location on the map, right click and you'll see the longitude and latitude.  Simple insert that as below (comma separated). There are also a few modules you will also need to make this work.
+You also need to provide longitude and latitude information.  This can be found on a google map or your personal wunderground page.  Simply find your location on the map, right click and you'll see the longitude and latitude.  Then insert that as shown below (comma separated). There are also a few modules you will also need to make this work.
 
 ### Set Up
 
