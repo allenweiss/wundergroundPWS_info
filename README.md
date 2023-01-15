@@ -2,7 +2,7 @@
 
 If you connect a weather station to Wunderground, this is a very simple way to see your data over time in a user-friendly way, search a date plus get a forecast.
 
-This script uses the wunderground apis to get historical and current wunderground data for your station and presents the results.  It also gives you forecasts for your specific area.
+This python script uses the wunderground apis to get historical and current wunderground data for your station and presents the results.  It also gives you forecasts for your specific area.
 
 All you need to input in the python code is your station ID, your API and an estimate of how many weeks of data you have at Wunderground (see below in Set Up).
 
@@ -28,7 +28,7 @@ Import the following modules: datetime, simple_term_menu, colorama, urllib3, jso
 
 ### Usage
 
-You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 days of past data). 
+You simply run python3 weather.py and, using the tab selector, choose how many days or weeks of data you want to analyze (this example uses 5 days of past data). From the results screen you have the option to search for a specific date or see a forecast or hit return to update the daily information.
 
 <img width="665" alt="2023-01-14_16-27-32" src="https://user-images.githubusercontent.com/1487109/212503057-a510ba60-c9e4-4cd0-8c4d-e5e731c3b3ea.png">
 
