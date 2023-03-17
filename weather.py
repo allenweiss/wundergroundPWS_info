@@ -3,26 +3,30 @@ from pprint import pprint
 from simple_term_menu import TerminalMenu
 from wunderground_pws import WUndergroundAPI, units
 from datetime import datetime, timedelta
-#from itertools import cycle
+from itertools import cycle
 import json
 import urllib3
 import colorama
 from colorama import Fore, Back, Style
+import csv, os, sys, time
+import os.path
+import time
+
 colorama.init(autoreset=True)
 http = urllib3.PoolManager()
 
 # *********SET UP *******************
 
-weeks_past =   # how many weeks in the past do you want to examine
+weeks_past = 11  # how many weeks in the past do you want to examine
 
 wu = WUndergroundAPI(
-    api_key="",  # the api key
-    default_station_id="",  # your station id
+    api_key="9c0e747f7a9b4fdd8e747f7a9b5fdd89",  # the api key
+    default_station_id="KCASANTA4208",  # your station id
     units=units.ENGLISH_UNITS,
 )
 
 const={
- 'coord':'',    # your longitude and latitude for the forecast
+ 'coord':'34.45,-119.70',    # your longitude and latitude for the forecast
 }
 
 # *********END SET UP *******************
@@ -117,12 +121,17 @@ def minmax():
     data = resp.data
     ccurrent_ov = json.loads(data)
     ct=ccurrent_ov['observations']
+
     rs=len(ct)
     #ct[i]['obsTimeLocal']
     arr=[]
     ind=[]
     for i in range(0,rs):
-        arr.append(ct[i]['imperial']['precipRate'])
+        if ct[i]['imperial']['precipRate']==None:
+            precip=0
+        else:
+            precip=ct[i]['imperial']['precipRate']
+        arr.append(precip)
         ind.append(ct[i]['obsTimeLocal'])
     maxr=max(arr)
     index = arr.index(maxr) 
@@ -152,6 +161,9 @@ def nonzero(n):
     return rs
     
 def main(rng,elem):
+    #print(rng)
+    #print(elem)
+    #exit(0)
     dt2=datetime.now()
     dayTime = dt2.strftime("%-I:%M %p")
     tot = 0
@@ -202,7 +214,9 @@ def main(rng,elem):
         if flag==0:
             tot = tot + ccurrent["imperial"]["precipTotal"]
             print(nonzero(ccurrent["imperial"]["precipTotal"])+ " - " + wkday)
-            
+     #https://api.weather.com/v2/pws/observations/all/1day?stationId=KCASANTA4208&format=json&units=e&apiKey=9c0e747f7a9b4fdd8e747f7a9b5fdd89
+
+       
     url2 = (
         "https://api.weather.com/v2/pws/observations/current?stationId="
         + wu.default_station_id
@@ -239,7 +253,9 @@ def main(rng,elem):
             Fore.RED
             + f"Note that one or more historical days are missing due to a lack of data.\nThe earlist date with your data is {earliest_date} but you requested {date_asked}.\n"
         )
-    fc=str(input('See a forecast (f), search a date (d), start again (s) or hit return to refresh? ') or 'a')
+    print('https://www.wunderground.com/dashboard/pws/KCASANTA4208')
+    fc=str(input('See a forecast (f), search a date (d), rain since..(h), start again (s), exit (x) or hit return to refresh? ') or 'a')
+ 
     if fc=='f':
         weatherForecast(6)
         exit(0)
@@ -249,6 +265,8 @@ def main(rng,elem):
         searchHist()
     elif fc=='s':
         chooseHist()
+    elif fc=='h':
+        getAllDates()
     elif fc=='x':
         exit(0)
  
@@ -261,6 +279,9 @@ def weatherForecast(n):
      print()
      print("***************FORECAST********************")
      print()
+     #print('******************')
+     #print('TODAY')
+     #print('******************')
      for i in range(0,n):
          
          if str(forecast['daypart'][0]['dayOrNight'][i])=='N':
@@ -287,10 +308,60 @@ def weatherForecast(n):
      else:
          main([dayNumber],lastnElements(1))
  
+
+def getAllDates():
+    from datetime import date, timedelta
+    print()
+    totalPrecip=0
+    print("What is beginning date?")
+    yr=input("Year (YYYY):")
+    mo=input("Month (MM):")
+    dy=input("Day (DD): ")
+    start_date = date(int(yr), int(mo), int(dy)) 
+    endDate_yr= datetime.now().year
+    endDate_mo= datetime.now().month
+    endDate_day= datetime.now().day
+    end_date=date(endDate_yr,endDate_mo,endDate_day)
+
+    
+    
+    delta = end_date - start_date   # returns timedelta
+
+    for i in range(delta.days + 1):
+        day = start_date + timedelta(days=i)
+   
+        td=str(day.year)+str('%02d' % day.month)+str('%02d' % day.day)
+
+        url = (
+            "https://api.weather.com/v2/pws/history/daily?stationId="
+            + wu.default_station_id
+            + "&format=json&units=e&date="
+            + td
+            + "&apiKey="
+            + wu.api_key
+            + ""
+        )
+
+        resp = http.request("GET", url)
+        data = resp.data
+        ccurrent = json.loads(data)
+        if len(ccurrent["observations"]) == 0:  # check to see if the return is empty
+            print("You do not have data for this date")
+            exit(0)
+
+        obs=ccurrent["observations"][0]
+        totPrecip=obs['imperial']['precipTotal']
+        totalPrecip+=totPrecip
+    print()
+    print(format(totalPrecip,'.2f')+' inches')
+    print('Over '+str(i)+' days')
+    print()
+        
+
 def searchHist():
      print()
-     yr=input("Year (YYYY):")
-     mo=input("Month (MM):")
+     yr=input("Year (YYYY): ")
+     mo=input("Month (MM): ")
      dy=input("Day (DD): ")
      
      if len(str(yr))!=4 or len(str(mo))!=2 or len(str(dy))!=2:
@@ -333,8 +404,11 @@ def searchHist():
          searchHist()
      elif fc=='x':
          exit(0)
-   
-      
+     
+     
+     
 
 if __name__ == "__main__":
     chooseHist()
+
+    
